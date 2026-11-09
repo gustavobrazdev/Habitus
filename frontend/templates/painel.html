@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block titulo %}Painel{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><span class="sobretitulo">VISÃO GERAL</span><h1>Minha casa</h1><p>Veja o que está acontecendo em cada ambiente.</p></div><a href="{{ url_for('dispositivos.listar') }}" class="botao primario">Gerenciar dispositivos</a></div>
+<div class="grade-estatisticas">
+    <div class="cartao estatistica"><span>Dispositivos</span><strong>{{ dispositivos|length }}</strong><small>cadastrados na casa</small></div>
+    <div class="cartao estatistica"><span>Ligados agora</span><strong>{{ ligados }}</strong><small>de {{ dispositivos|length }} disponíveis</small></div>
+    <div class="cartao estatistica"><span>Cômodos</span><strong>{{ comodos|length }}</strong><small>ambientes cadastrados</small></div>
+    <div class="cartao estatistica"><span>Rotinas ativas</span><strong>{{ total_rotinas }}</strong><small>agendamentos disponíveis</small></div>
+</div>
+<div class="secao-titulo"><h2>Ambientes da casa</h2><a href="{{ url_for('casas.detalhes') }}">Ver casa</a></div>
+<div class="grade-ambientes">
+{% for comodo in comodos %}
+    <section class="cartao ambiente"><div class="ambiente-topo"><div class="icone-ambiente">⌂</div><small>{{ por_comodo[comodo.id_comodo]|length }} dispositivos</small></div><h3>{{ comodo.nome }}</h3>
+        {% if por_comodo[comodo.id_comodo] %}
+            {% for dispositivo in por_comodo[comodo.id_comodo] %}
+                <div class="linha-ambiente"><span>{{ dispositivo.nome }}</span><span class="status {% if dispositivo.ligado %}ativo{% endif %}">{{ 'Ligado' if dispositivo.ligado else 'Desligado' }}</span></div>
+            {% endfor %}
+        {% else %}<p class="texto-vazio">Nenhum dispositivo neste ambiente.</p>{% endif %}
+    </section>
+{% else %}
+    <div class="cartao vazio">Nenhum cômodo cadastrado. <a href="{{ url_for('casas.detalhes') }}">Adicionar cômodo</a></div>
+{% endfor %}
+</div>
+<div class="secao-titulo"><h2>Atividade recente</h2><a href="{{ url_for('historico.listar') }}">Ver histórico</a></div>
+<div class="cartao lista-eventos">
+    {% for evento in ultimos_eventos %}
+        <div class="evento"><div class="marcador-evento"></div><div><strong>{{ evento.dispositivo }}</strong><p>{{ evento.acao|replace('_', ' ') }} · {{ evento.usuario or 'Automação' }}</p></div><time>{{ evento.data_acao.strftime('%d/%m %H:%M') }}</time></div>
+    {% else %}<p class="texto-vazio">Ainda não há alterações registradas. Teste ligar uma luz.</p>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block titulo %}Trocar senha{% endblock %}
+{% block conteudo %}
+<section class="cartao-acesso">
+    <span class="marca marca-acesso"><span class="marca-simbolo">H</span><span>habitus<small>SMART HOME 2050</small></span></span>
+    <div class="chamada-acesso">PRIMEIRO ACESSO</div>
+    <h1>Crie sua senha</h1>
+    <p class="descricao">Olá, {{ g.usuario.nome }}! Você entrou com uma senha temporária. Escolha uma senha pessoal para continuar.</p>
+    <form method="post" class="formulario">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label>Nova senha <input type="password" name="senha" required minlength="8" autocomplete="new-password" placeholder="Pelo menos 8 caracteres"></label>
+        <label>Confirme a nova senha <input type="password" name="confirmacao" required minlength="8" autocomplete="new-password" placeholder="Repita a senha"></label>
+        <button class="botao primario largura-total">Salvar e continuar</button>
+    </form>
+    <form method="post" action="{{ url_for('auth.sair') }}" class="texto-inferior">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="link-perigo" type="submit">Sair</button>
+    </form>
+</section>
+{% endblock %}

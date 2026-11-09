@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block titulo %}Cadastro{% endblock %}
+{% block conteudo %}
+<section class="tela-acesso tela-cadastro-figma">
+    <div class="imagem-acesso-figma">
+        <img src="{{ url_for('static', filename='img/sala-habitus.png') }}" alt="Sala inteligente Habitus">
+    </div>
+    <div class="conteudo-acesso-figma">
+        <div class="cabecalho-acesso-figma">
+            <a class="marca-acesso-figma" href="{{ url_for('auth.entrar') }}">Habitus</a>
+            <span class="marca-subtitulo-figma">Smart Home 2050</span>
+            <a class="link-acesso-figma" href="{{ url_for('auth.cadastro') }}">Crie sua conta</a>
+        </div>
+        <p class="chamada-acesso-figma">Comece por aqui</p>
+        <h1>Crie sua casa</h1>
+        <p class="descricao-acesso-figma">Você será o administrador da sua casa.</p>
+        <form method="post" class="formulario-acesso-figma formulario-cadastro-figma">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>Nome<input type="text" name="nome" required minlength="2" maxlength="100" autocomplete="name" placeholder="Seu nome"></label>
+            <label>E-mail<input type="email" name="email" required maxlength="150" autocomplete="email" placeholder="gustavo12teste@gmail.com"></label>
+            <label>Nome da casa<input type="text" name="nome_casa" required minlength="2" maxlength="100" placeholder="Casa 1"></label>
+            <div class="grupo-comodos-figma">
+                <div class="titulo-comodos-figma">
+                    <span>Cômodos iniciais</span>
+                    <button class="ajuda-comodos-figma" type="button" aria-label="Como funcionam os cômodos iniciais" aria-describedby="popup-comodos-figma">ⓘ</button>
+                    <div class="popup-comodos-figma" id="popup-comodos-figma" role="tooltip">
+                        <strong>Como funcionam os cômodos iniciais?</strong>
+                        <p><b>Usar sugeridos:</b> O Habitus criará automaticamente cômodos e dispositivos com base no seu cadastro.</p>
+                        <p><b>Começar sem cômodos:</b> Sua casa será criada vazia. Depois, você poderá adicionar cômodos e dispositivos.</p>
+                    </div>
+                </div>
+                <fieldset class="opcoes-comodos-figma">
+                    <legend class="visualmente-oculto">Cômodos iniciais</legend>
+                    <label><input type="radio" name="comodos_iniciais" value="sugeridos" checked><span><strong>Usar sugeridos</strong></span></label>
+                    <label><input type="radio" name="comodos_iniciais" value="vazio"><span><strong>Começar sem cômodos</strong></span></label>
+                </fieldset>
+            </div>
+            <label>Senha<div class="campo-senha-figma"><input type="password" name="senha" required minlength="8" autocomplete="new-password" placeholder="Sua senha"><button class="mostrar-senha-figma" type="button" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.6"/><path class="risco-olho" d="M4 20 20 4"/></svg></button></div></label>
+            <label>Confirmar senha<div class="campo-senha-figma"><input type="password" name="confirmacao" required minlength="8" autocomplete="new-password" placeholder="Repita a senha"><button class="mostrar-senha-figma" type="button" aria-label="Mostrar confirmação da senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.6"/><path class="risco-olho" d="M4 20 20 4"/></svg></button></div></label>
+            <button type="submit" class="botao-acesso-figma">Criar conta</button>
+        </form>
+        <p class="texto-inferior">Já tem uma conta? <a href="{{ url_for('auth.entrar') }}">Entrar</a></p>
+    </div>
+</section>
+{% endblock %}

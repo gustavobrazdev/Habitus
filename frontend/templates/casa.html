@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block titulo %}Minha casa{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><span class="sobretitulo">CONFIGURAÇÕES DA CASA</span><h1>{{ g.nome_casa }}</h1><p>Gerencie os ambientes e as pessoas que podem acessar a residência.</p></div><span class="etiqueta">{{ 'Administrador' if g.usuario.pode_gerenciar() else 'Morador comum' }}</span></div>
+{% if minhas_casas|length > 1 %}
+<section class="cartao caixa-formulario"><h2>Trocar de casa</h2><form class="formulario-em-linha" method="post" action="{{ url_for('casas.selecionar') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Casa<select name="id_casa">{% for casa in minhas_casas %}<option value="{{ casa.id_casa }}" {% if casa.id_casa == g.casa_id %}selected{% endif %}>{{ casa.nome }} ({{ casa.perfil }})</option>{% endfor %}</select></label><button class="botao secundario">Selecionar</button></form></section>
+{% endif %}
+<div class="duas-areas"><section class="cartao caixa-formulario"><h2>Cômodos</h2><p>Ambientes cadastrados nesta casa.</p>
+<div class="lista-curta">
+{% for comodo in comodos %}
+    <div class="item-lista comodo-item">
+        <span class="icone-lista">⌂</span>
+        <div class="comodo-dados"><strong>{{ comodo.nome }}</strong><small>{{ comodo.dispositivos_ativos }} dispositivo(s)</small></div>
+        {% if g.usuario.pode_gerenciar() %}
+        <div class="comodo-acoes">
+            <form method="post" action="{{ url_for('casas.renomear_comodo', id_comodo=comodo.id_comodo) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input name="nome" value="{{ comodo.nome }}" minlength="2" maxlength="80" required aria-label="Novo nome para {{ comodo.nome }}">
+                <button class="botao discreto">Renomear</button>
+            </form>
+            {% if comodo.total_dispositivos == 0 %}
+            <form method="post" action="{{ url_for('casas.remover_comodo', id_comodo=comodo.id_comodo) }}" data-confirmar="Excluir o cômodo {{ comodo.nome }}?">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="link-perigo">Excluir</button>
+            </form>
+            {% elif comodo.dispositivos_ativos %}
+            <small class="dica-comodo">Transfira os dispositivos em <a href="{{ url_for('dispositivos.listar') }}">Dispositivos</a> para poder excluir.</small>
+            {% else %}
+            <small class="dica-comodo">Guarda o histórico de dispositivos removidos.</small>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% else %}<p class="texto-vazio">Nenhum cômodo cadastrado.</p>{% endfor %}
+</div>
+{% if g.usuario.pode_gerenciar() %}<form method="post" action="{{ url_for('casas.novo_comodo') }}" class="formulario"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Novo cômodo<input name="nome" minlength="2" maxlength="80" placeholder="Ex.: Garagem, Escritório, Varanda" required></label><button class="botao primario">Adicionar cômodo</button></form>{% endif %}</section>
+<section class="cartao caixa-formulario moradores-casa"><h2>Moradores</h2><p>Administradores gerenciam a casa. Moradores comuns podem controlar dispositivos e consultar informações.</p><div class="lista-curta moradores-lista">{% for morador in moradores %}<div class="pessoa morador-item"><div class="avatar avatar-morador" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5.5 19v-1.2a3.4 3.4 0 0 1 3.4-3.4h6.2a3.4 3.4 0 0 1 3.4 3.4V19Z"/></svg></div><div class="pessoa-dados"><div class="morador-identidade"><strong>{{ morador.nome }}</strong><span class="etiqueta-pessoa">{{ 'Administrador' if morador.perfil == 'administrador' else 'Morador comum' }}</span></div><small>{{ morador.email }}</small></div>{% if g.usuario.pode_gerenciar() and morador.id_usuario != g.usuario.id_usuario %}<div class="pessoa-acoes"><form method="post" action="{{ url_for('casas.mudar_perfil', id_morador=morador.id_morador) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><select name="perfil" aria-label="Permissão de {{ morador.nome }}"><option value="comum" {% if morador.perfil == 'comum' %}selected{% endif %}>Comum</option><option value="administrador" {% if morador.perfil == 'administrador' %}selected{% endif %}>Administrador</option></select><button class="botao discreto">Salvar</button></form><form method="post" action="{{ url_for('casas.remover_morador', id_morador=morador.id_morador) }}" data-confirmar="Remover o acesso deste morador?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="link-perigo">Remover</button></form></div>{% endif %}</div>{% endfor %}</div>{% if g.usuario.pode_gerenciar() %}
+{% if novo_morador %}
+<div class="senha-temporaria" role="alert">
+    <strong>Senha temporária de {{ novo_morador.nome }}</strong>
+    <code>{{ novo_morador.senha_temporaria }}</code>
+    <small>Entregue ao morador junto com o e-mail <b>{{ novo_morador.email }}</b>. Ela aparece só agora e precisará ser trocada no primeiro acesso.</small>
+</div>
+{% endif %}
+<h3 class="subtitulo-form">Adicionar morador</h3>
+<form method="post" action="{{ url_for('casas.novo_morador') }}" class="formulario">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>E-mail<input type="email" name="email" maxlength="150" placeholder="morador@exemplo.com" required autocomplete="off"></label>
+    <label>Nome completo <span class="dica-campo">(só para quem ainda não tem conta)</span><input name="nome" minlength="2" maxlength="100" placeholder="Ex.: Carlos Souza" autocomplete="off"></label>
+    <label>Permissão<select name="perfil"><option value="comum">Morador comum</option><option value="administrador">Administrador</option></select></label>
+    <button class="botao primario">Adicionar morador</button>
+</form>
+<p class="observacao">Se o e-mail já tiver conta, a pessoa é apenas vinculada à casa, sem mudar a senha dela. Se não tiver, criamos a conta com uma senha temporária.</p>
+{% endif %}</section></div>
+{% endblock %}

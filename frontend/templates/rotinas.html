@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block titulo %}Rotinas{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><span class="sobretitulo">AUTOMAÇÃO</span><h1>Rotinas</h1><p>Programe os dispositivos para executar ações em horários escolhidos.</p></div></div>
+{% if g.usuario.pode_gerenciar() %}
+<section class="cartao caixa-formulario {% if editando %}editando{% endif %}" id="formulario-rotina">
+    <h2>{{ 'Editar rotina' if editando else 'Nova rotina' }}</h2>
+    <p>{{ 'Altere somente o que precisar e salve.' if editando else 'Uma rotina controla um dispositivo por vez.' }}</p>
+    <form method="post" action="{{ url_for('rotinas.atualizar', id_rotina=editando) if editando else url_for('rotinas.criar') }}" class="formulario rotina-form" data-ajustes='{{ ajustes|tojson }}'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="duas-colunas">
+            <label>Nome da rotina<input type="text" name="nome" minlength="2" maxlength="100" required placeholder="Ex.: Luz da sala à noite" value="{{ formulario.nome }}"></label>
+            <label>Dispositivo<select name="id_dispositivo" id="tipo-dispositivo" required>{% for dispositivo in dispositivos %}<option value="{{ dispositivo.id_dispositivo }}" data-acoes="{{ dispositivo.acoes }}" {% if dispositivo.id_dispositivo == formulario.id_dispositivo %}selected{% endif %}>{{ dispositivo.nome }} · {{ dispositivo.nome_comodo }}</option>{% endfor %}</select></label>
+        </div>
+        <div class="tres-colunas">
+            <label>Ação<select name="acao" id="acao-rotina">{% for codigo, descricao in acoes.items() %}<option value="{{ codigo }}" {% if codigo == formulario.acao %}selected{% endif %}>{{ descricao }}</option>{% endfor %}</select></label>
+            <label class="campo-valor" id="campo-valor">
+                <span><span id="titulo-valor">Valor</span> <strong data-valor></strong></span>
+                <input type="range" name="valor" id="valor-rotina" value="{{ formulario.valor }}" data-salvo="{{ formulario.valor }}">
+            </label>
+            <label>Horário<input type="time" name="horario" required value="{{ formulario.horario }}"></label>
+        </div>
+        <fieldset class="dias-semana"><legend>Repetir nos dias</legend>{% for dia in dias_da_semana %}<label><input type="checkbox" name="dias" value="{{ loop.index0 }}" {% if loop.index0|string in formulario.dias %}checked{% endif %}> {{ dia }}</label>{% endfor %}</fieldset>
+        <div class="botoes-form">
+            <button class="botao primario" type="submit" {% if not dispositivos %}disabled{% endif %}>{{ 'Salvar alterações' if editando else 'Salvar rotina' }}</button>
+            {% if editando %}<a class="botao secundario" href="{{ url_for('rotinas.listar') }}">Cancelar edição</a>{% endif %}
+        </div>
+    </form>
+    {% if not dispositivos %}<p class="observacao">Primeiro <a href="{{ url_for('dispositivos.listar') }}">cadastre um dispositivo</a>.</p>{% endif %}
+</section>
+{% endif %}
+<div class="secao-titulo"><h2>Rotinas cadastradas</h2><span>{{ rotinas|length }} encontradas</span></div>
+<div class="grade-rotinas">
+{% for rotina in rotinas %}
+<article class="cartao rotina {% if rotina.id_rotina == editando %}em-edicao{% endif %}">
+    <div class="rotina-topo"><div class="tipo-icone">◷</div><span class="status {% if rotina.ativa %}ativo{% endif %}">{{ 'Ativa' if rotina.ativa else 'Pausada' }}</span></div>
+    <h3>{{ rotina.nome }}</h3>
+    <p>{{ rotina.nome_dispositivo }} · {{ rotina.nome_comodo }}</p>
+    <div class="horario-rotina">{{ rotina.horario }}</div>
+    <div class="descricao-rotina">{{ rotina.acao_texto }}</div>
+    <small class="dias-rotina">{{ rotina.dias_texto }}</small>
+    {% if g.usuario.pode_gerenciar() %}
+    <div class="acoes-rotina">
+        <a class="botao discreto" href="{{ url_for('rotinas.editar', id_rotina=rotina.id_rotina) }}#formulario-rotina">Editar</a>
+        <form method="post" action="{{ url_for('rotinas.alternar', id_rotina=rotina.id_rotina) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="botao secundario" type="submit">{{ 'Pausar' if rotina.ativa else 'Ativar' }}</button></form>
+        <form method="post" action="{{ url_for('rotinas.remover', id_rotina=rotina.id_rotina) }}" data-confirmar="Excluir esta rotina?"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="link-perigo" type="submit">Excluir</button></form>
+    </div>
+    {% endif %}
+</article>
+{% else %}<div class="cartao vazio">Nenhuma rotina cadastrada.</div>{% endfor %}
+</div>
+{% endblock %}

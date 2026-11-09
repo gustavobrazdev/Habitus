@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block titulo %}Histórico{% endblock %}
+{% block conteudo %}
+<div class="cabecalho-pagina"><div><span class="sobretitulo">ATIVIDADE DA CASA</span><h1>Histórico</h1><p>Confira quem alterou os dispositivos e quando isso aconteceu.</p></div></div>
+<section class="cartao tabela-cartao"><div class="secao-titulo interno"><h2>Últimas 100 alterações</h2><span>{{ eventos|length }} registros</span></div><div class="tabela-rolagem"><table><thead><tr><th>Data e hora</th><th>Dispositivo</th><th>Cômodo</th><th>Ação</th><th>Antes → Depois</th><th>Responsável</th></tr></thead><tbody>
+{% for evento in eventos %}<tr><td>{{ evento.data_acao.strftime('%d/%m/%Y %H:%M') }}</td><td><strong>{{ evento.dispositivo }}</strong></td><td>{{ evento.comodo }}</td><td>{{ evento.acao|replace('_',' ') }}</td><td>{{ evento.valor_anterior if evento.valor_anterior is not none else '—' }} → {{ evento.valor_novo if evento.valor_novo is not none else '—' }}</td><td>{{ evento.usuario or 'Automação' }}</td></tr>{% else %}<tr><td colspan="6" class="texto-vazio">O histórico está vazio. Altere algum dispositivo para testar.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<section class="tela-acesso tela-login-figma">
+    <div class="imagem-acesso-figma">
+        <img src="{{ url_for('static', filename='img/sala-habitus.png') }}" alt="Sala inteligente Habitus">
+    </div>
+    <div class="conteudo-acesso-figma">
+        <div class="cabecalho-acesso-figma">
+            <a class="marca-acesso-figma" href="{{ url_for('auth.entrar') }}">Habitus</a>
+            <span class="marca-subtitulo-figma">Smart Home 2050</span>
+            <a class="link-acesso-figma" href="{{ url_for('auth.entrar') }}">Acessar sua casa</a>
+        </div>
+        <p class="chamada-acesso-figma">Controle inteligente da sua casa</p>
+        <h1>Bem-vindo de volta</h1>
+        <p class="descricao-acesso-figma">Entre para acompanhar e controlar os ambientes da sua casa.</p>
+        <form method="post" class="formulario-acesso-figma">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>E-mail<input type="email" name="email" required maxlength="150" autocomplete="username" placeholder="gustavo12teste@gmail.com"></label>
+            <label>Senha<div class="campo-senha-figma"><input type="password" name="senha" required autocomplete="current-password" placeholder="Sua senha"><button class="mostrar-senha-figma" type="button" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.6"/><path class="risco-olho" d="M4 20 20 4"/></svg></button></div></label>
+            <button type="submit" class="botao-acesso-figma">Entrar na minha casa</button>
+        </form>
+        <p class="texto-inferior">Ainda não tem uma conta? <a href="{{ url_for('auth.cadastro') }}">Criar conta</a></p>
+    </div>
+</section>
+{% endblock %}

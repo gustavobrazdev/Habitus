@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101c2e">
+    <title>{% block titulo %}Habitus{% endblock %} | Smart Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+{# Durante a troca obrigatoria de senha a tela fica sem o menu. #}
+{% set mostrar_menu = g.usuario and not session.get('trocar_senha') %}
+<body class="{% if mostrar_menu %}com-sistema{% else %}sem-sistema{% endif %}">
+{% if mostrar_menu %}
+    <aside class="menu-lateral" id="menu-lateral">
+        <a class="marca" href="{{ url_for('site.painel') }}"><span class="marca-simbolo">H</span><span>habitus<small>SMART HOME 2050</small></span></a>
+        <div class="casa-atual"><span class="pontinho"></span><div><strong>{{ g.nome_casa }}</strong><small>Casa ativa</small></div></div>
+        <nav aria-label="Menu principal" class="navegacao">
+            <a href="{{ url_for('site.painel') }}" class="{% if request.endpoint == 'site.painel' %}selecionado{% endif %}"><span>▦</span> Painel</a>
+            <a href="{{ url_for('dispositivos.listar') }}" class="{% if request.blueprint == 'dispositivos' %}selecionado{% endif %}"><span>◈</span> Dispositivos</a>
+            <a href="{{ url_for('rotinas.listar') }}" class="{% if request.blueprint == 'rotinas' %}selecionado{% endif %}"><span>◷</span> Rotinas</a>
+            <a href="{{ url_for('historico.listar') }}" class="{% if request.blueprint == 'historico' %}selecionado{% endif %}"><span>≡</span> Histórico</a>
+            <a href="{{ url_for('casas.detalhes') }}" class="{% if request.blueprint == 'casas' %}selecionado{% endif %}"><span>⌂</span> Minha casa</a>
+        </nav>
+        <div class="perfil-menu"><div class="avatar avatar-usuario" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="7.5" r="3.5"/><path d="M5.5 19v-1.2a3.4 3.4 0 0 1 3.4-3.4h6.2a3.4 3.4 0 0 1 3.4 3.4V19Z"/></svg></div><div class="perfil-texto"><strong>{{ g.usuario.nome }}</strong><small>{{ 'Administrador' if g.usuario.pode_gerenciar() else 'Morador comum' }}</small></div></div>
+        <form action="{{ url_for('auth.sair') }}" method="post" class="form-sair">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="sair">Sair da conta</button>
+        </form>
+    </aside>
+    <div class="area-principal">
+        <header class="barra-superior"><button type="button" id="abrir-menu" class="botao-menu" aria-label="Abrir menu">☰</button><div class="barra-descricao">Ambiente de demonstração <span>•</span> Dispositivos simulados</div><span class="etiqueta-conectado">● Sistema local</span></header>
+        <main class="conteudo">
+{% else %}
+        <main class="acesso">
+{% endif %}
+            {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    <div class="avisos" role="status">
+                        {% for categoria, mensagem in mensagens %}
+                            <div class="aviso {{ categoria }}">{{ mensagem }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% block conteudo %}{% endblock %}
+        </main>
+{% if mostrar_menu %}
+    </div>
+{% endif %}
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>
