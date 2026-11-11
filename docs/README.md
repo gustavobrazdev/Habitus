@@ -31,6 +31,10 @@ Esta pasta reúne a documentação técnica do **Habitus — Smart Home 2050**, 
 | [FRONTEND.md](FRONTEND.md) | Templates Jinja, telas por perfil, CSS e responsividade, JavaScript e comunicação com o back-end | Concluído em 08/11/2026 |
 | [ROTEIRO_APRESENTACAO.md](ROTEIRO_APRESENTACAO.md) | Roteiro da apresentação acadêmica, ligado aos arquivos e às telas reais | Concluído em 08/11/2026; resultados dos testes atualizados em 09/11/2026 |
 | [TELAS_FIGMA.md](TELAS_FIGMA.md) | Material complementar: guia para desenhar as telas no Figma | Pendente de atualização: não cita a opção de cômodos iniciais nem a tela de troca de senha |
+| [diagramas/README.md](diagramas/README.md) | Índice dos diagramas: os novos desta pasta e o mapa dos diagramas que já existiam nos outros documentos | Criado em 11/11/2026 |
+| [diagramas/CASOS_DE_USO.md](diagramas/CASOS_DE_USO.md) | Diagrama UML de casos de uso: Visitante, MORADOR (`comum`), ADMIN (`administrador`) e Executor de rotinas, com rastreabilidade até rotas, permissões e testes | Criado em 11/11/2026 |
+| [diagramas/SEQUENCIA_TRANSFERIR_DISPOSITIVO.md](diagramas/SEQUENCIA_TRANSFERIR_DISPOSITIVO.md) | Diagrama UML de sequência da transferência de um dispositivo entre cômodos, do formulário ao MySQL | Criado em 11/11/2026 |
+| [diagramas/ORGANIZACAO_TESTES.md](diagramas/ORGANIZACAO_TESTES.md) | Diagramas da organização dos 144 testes: grupos, categorias, arquivos, componentes verificados e lacunas | Criado em 11/11/2026 |
 
 `TELAS_FIGMA.md` não faz parte da documentação técnica do código: é um guia de design, preservado como estava. O estado do protótipo no Figma não foi conferido nesta documentação; segundo o grupo, as etapas Lo-Fi e Hi-Fi foram concluídas e o Prototype ainda está em finalização.
 
@@ -57,6 +61,7 @@ Os conceitos de Engenharia de Software descritos em [ARQUITETURA.md](ARQUITETURA
 | Instalar, executar e testar | [README principal](../README.md) → [TESTES.md](TESTES.md) → [BANCO_DE_DADOS.md](BANCO_DE_DADOS.md) |
 | Revisar segurança e permissões | [ROTAS_E_PERMISSOES.md](ROTAS_E_PERMISSOES.md) → [AUTENTICACAO_E_SEGURANCA.md](AUTENTICACAO_E_SEGURANCA.md) |
 | Trabalhar no visual | [FRONTEND.md](FRONTEND.md) → [TELAS_FIGMA.md](TELAS_FIGMA.md) (material complementar) |
+| Ver o sistema em diagramas UML | [diagramas/README.md](diagramas/README.md) → [CASOS_DE_USO.md](diagramas/CASOS_DE_USO.md) → [SEQUENCIA_TRANSFERIR_DISPOSITIVO.md](diagramas/SEQUENCIA_TRANSFERIR_DISPOSITIVO.md) → [ORGANIZACAO_TESTES.md](diagramas/ORGANIZACAO_TESTES.md) |
 
 ## Visão geral do sistema
 

@@ -52,6 +52,7 @@ O **Habitus** é uma aplicação web que simula o gerenciamento de uma casa inte
 - [Demonstração prática](#demonstração-prática)
 - [Segurança](#segurança)
 - [Limitações](#limitações)
+- [Diagramas UML e de Testes](#diagramas-uml-e-de-testes)
 - [Documentação complementar](#documentação-complementar)
 - [Autoria](#autoria)
 
@@ -623,6 +624,20 @@ Com os dois terminais em execução:
 
 ---
 
+## Diagramas UML e de Testes
+
+Diagramas complementares, feitos em Mermaid a partir do código, ficam em [docs/diagramas/](docs/diagramas/README.md):
+
+| Diagrama | O que mostra |
+| --- | --- |
+| [Casos de uso](docs/diagramas/CASOS_DE_USO.md) | Os atores Visitante, MORADOR (`comum`), ADMIN (`administrador`) e o Executor de rotinas, o que cada um pode fazer e a rota, a permissão e o teste de cada caso de uso |
+| [Sequência: transferir um dispositivo](docs/diagramas/SEQUENCIA_TRANSFERIR_DISPOSITIVO.md) | A operação completa, do formulário ao MySQL: CSRF, permissão, validação, serviço, repositórios, transação, COMMIT e ROLLBACK |
+| [Organização dos testes](docs/diagramas/ORGANIZACAO_TESTES.md) | Os 144 testes coletados por grupo, categoria e arquivo, os componentes verificados e as lacunas de cobertura |
+
+O [índice da pasta](docs/diagramas/README.md) também aponta os diagramas que já existiam no README e em `docs/` (camadas, banco de dados, classes, agendador, login e o executor de rotinas).
+
+---
+
 ## Documentação complementar
 
 A documentação técnica fica em `docs/`, com índice, visão geral e glossário em [docs/README.md](docs/README.md).
@@ -640,6 +655,7 @@ A documentação técnica fica em `docs/`, com índice, visão geral e glossári
 | [docs/FRONTEND.md](docs/FRONTEND.md) | Templates, telas, CSS e JavaScript | Concluído em 08/11/2026 |
 | [docs/ROTEIRO_APRESENTACAO.md](docs/ROTEIRO_APRESENTACAO.md) | Roteiro para a apresentação acadêmica | Concluído em 08/11/2026; resultados dos testes atualizados em 09/11/2026 |
 | [docs/TELAS_FIGMA.md](docs/TELAS_FIGMA.md) | Material complementar: orientações para as telas no Figma | Pendente de atualização: faltam os cômodos iniciais e a tela de troca de senha |
+| [docs/diagramas/](docs/diagramas/README.md) | Diagramas UML de casos de uso e de sequência, organização dos testes e mapa dos demais diagramas | Criado em 11/11/2026 |
 | [AGENTS.md](AGENTS.md) | Referência técnica condensada e regras para agentes de IA | Atualizado em 09/11/2026 (resultados dos testes) |
 
 Em caso de divergência entre qualquer documento e o código, o código prevalece.

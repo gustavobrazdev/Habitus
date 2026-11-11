@@ -462,6 +462,7 @@ O projeto já contém o `README.md` principal e a documentação técnica em `do
 | Front-end | `docs/FRONTEND.md` |
 | Apresentação acadêmica | `docs/ROTEIRO_APRESENTACAO.md` |
 | Design no Figma (complementar, pendente de atualização) | `docs/TELAS_FIGMA.md` |
+| Diagramas UML (casos de uso, sequência), organização dos testes e mapa dos demais diagramas | `docs/diagramas/` (índice em `docs/diagramas/README.md`) |
 
 Quando houver pedido para atualizar o README ou a documentação técnica:
 
