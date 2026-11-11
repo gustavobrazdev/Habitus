@@ -16,7 +16,7 @@
         <p class="descricao-acesso-figma">Entre para acompanhar e controlar os ambientes da sua casa.</p>
         <form method="post" class="formulario-acesso-figma">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <label>E-mail<input type="email" name="email" required maxlength="150" autocomplete="username" placeholder="gustavo12teste@gmail.com"></label>
+            <label>E-mail<input type="email" name="email" required maxlength="150" autocomplete="username" placeholder="Digite o seu E-mail"></label>
             <label>Senha<div class="campo-senha-figma"><input type="password" name="senha" required autocomplete="current-password" placeholder="Sua senha"><button class="mostrar-senha-figma" type="button" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="12" r="2.6"/><path class="risco-olho" d="M4 20 20 4"/></svg></button></div></label>
             <button type="submit" class="botao-acesso-figma">Entrar na minha casa</button>
         </form>
